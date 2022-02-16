@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.DotNet.Scaffolding.Shared;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using Microsoft.VisualStudio.Web.CodeGeneration.Utils.Messaging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

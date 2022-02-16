@@ -14,7 +14,8 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
     {
         public const string TOOL_NAME = "dotnet-aspnet-codegenerator-design";
         private const string APPNAME = "Code Generation";
-
+        public const string MSIDENTITY_TOOL_NAME = "dotnet-msidentity";
+        public const string MSIDENTITY = "msidentity";
         private static ConsoleLogger _logger;
 
         public static void Main(string[] args)
@@ -22,8 +23,22 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
             _logger = new ConsoleLogger();
             _logger.LogMessage($"Command Line: {string.Join(" ", args)}", LogMessageLevel.Trace);
 
-            //DotnetToolDispatcher.EnsureValidDispatchRecipient(ref args);
-            Execute(args, _logger);
+            if (args.Length > 0)
+            {
+                if (args[1] == MSIDENTITY || args[0] == MSIDENTITY_TOOL_NAME)
+                {
+                    ExecuteMsIdentity(args);
+                }
+                else
+                {
+                    Execute(args, _logger);
+                }
+            }
+        }
+
+        private static void ExecuteMsIdentity(string[] args)
+        {
+            throw new NotImplementedException();
         }
 
         private static void Execute(string[] args, ConsoleLogger logger)

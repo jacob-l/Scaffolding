@@ -6,7 +6,9 @@ using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
 using System.Threading.Tasks;
-
+using Microsoft.DotNet.Scaffolding.Shared;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.VisualStudio.Web.CodeGeneration.Tools;
 namespace Microsoft.DotNet.MSIdentity.Tool
 {
     public static class Program
@@ -73,11 +75,21 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
+                //RunTool();
                 IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_AAD_APPS_COMMAND, provisioningToolOptions);
                 await msAADTool.Run();
                 return 0;
             }
             return -1;
+        }
+
+        private static ScaffoldingServer StartServerMsIdentity(ILogger logger, ProvisioningToolOptions toolOptions)
+        {
+            ScaffoldingServer server = ScaffoldingServer.Listen(logger);
+            server.AddHandler(new ProvisioningToolOptionsMessageHandler(toolOptions, logger));
+            server.AddHandler(new FileSystemChangeMessageHandler(logger));
+            server.Accept();
+            return server;
         }
 
         private static async Task<int> HandleListTenants(ProvisioningToolOptions provisioningToolOptions)
