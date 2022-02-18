@@ -23,6 +23,14 @@ namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
         /// </summary>
         public static readonly MessageType ProjectInfoRequest = new MessageType("project_info_request", 0);
         /// <summary>
+        /// Request message for getting dotnet-msidentity ProvisioningToolOptions args.
+        /// </summary>
+        public static readonly MessageType ProvisioningToolOptionsRequest = new MessageType("provisioningToolOptions_info_request", 0);
+        /// <summary>
+        /// Request message for getting dotnet-msidentity ProvisioningToolOptions args.
+        /// </summary>
+        public static readonly MessageType ProvisioningToolOptionsResponse = new MessageType("provisioningToolOptions_info_response", 0);
+        /// <summary>
         /// Response message containing project information.
         /// <see cref="ProjectModel.IProjectContext"/>
         /// </summary>

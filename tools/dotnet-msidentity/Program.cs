@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Builder;
@@ -8,11 +9,15 @@ using System.CommandLine.Parsing;
 using System.Threading.Tasks;
 using Microsoft.DotNet.Scaffolding.Shared;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
+using Microsoft.Extensions.Internal;
 using Microsoft.VisualStudio.Web.CodeGeneration.Tools;
+using Command = System.CommandLine.Command;
 namespace Microsoft.DotNet.MSIdentity.Tool
 {
     public static class Program
     {
+        public static int ServerWaitTimeForExit = 3;
+
         public static async Task<int> Main(string[] args)
         {
             var rootCommand = MsIdentityCommand();
@@ -73,15 +78,61 @@ namespace Microsoft.DotNet.MSIdentity.Tool
 
         private static async Task<int> HandleListApps(ProvisioningToolOptions provisioningToolOptions)
         {
+            //System.Diagnostics.Debugger.Launch();
+            await Task.Delay(100);
             if (provisioningToolOptions != null)
             {
+                var logger = new ConsoleLogger();
+                var server = StartServerMsIdentity(logger, provisioningToolOptions);
+                try
+                {
+                    var command = CreateMsIdentityDipatchCommand(
+                        new string[] {"msidentity", Commands.LIST_AAD_APPS_COMMAND },
+                        "net7.0",
+                        server);
+
+                    var exitCode = command
+                        .OnErrorLine(e => logger.LogMessage(e, LogMessageLevel.Error))
+                        .OnOutputLine(e => logger.LogMessage(e, LogMessageLevel.Information))
+                        .Execute()
+                        .ExitCode;
+
+                    return exitCode;
+                }
+                finally
+                {
+                    server.WaitForExit(TimeSpan.FromSeconds(ServerWaitTimeForExit));
+                }
                 //RunTool();
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_AAD_APPS_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
-                return 0;
+                /*IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_AAD_APPS_COMMAND, provisioningToolOptions);
+                *///
+                //return 0;
             }
             return -1;
         }
+        private static Extensions.Internal.Command CreateMsIdentityDipatchCommand(string[] args, string shortFramework, ScaffoldingServer server)
+        {
+            var dependencyArgs = ToolCommandLineHelper.GetProjectDependencyCommandArgs(
+                args,
+                shortFramework,
+                server.Port.ToString());
+            var depsFile =          "D:\\Stuff\\Test Scripts\\net7\\bin\\Debug\\net7.0\\net7.deps.json";//Path.Combine(targetDir, context.RuntimeConfig);
+            var runtimeConfigPath =                   "D:\\Stuff\\Test Scripts\\net7\\bin\\Debug\\net7.0\\net7.runtimeconfig.json";//Path.Combine(targetDir, context.DepsFile);
+            var dotnetCodeGenInsideManPath = "D:\\Stuff\\Test Scripts\\net7\\bin\\Debug\\net7.0\\dotnet-aspnet-codegenerator-design.dll";
+
+
+            return DotnetToolDispatcher.CreateDispatchCommand(
+                    runtimeConfigPath: runtimeConfigPath,
+                    depsFile: depsFile,
+                    dependencyToolPath: dotnetCodeGenInsideManPath,
+                    dispatchArgs: dependencyArgs,
+                    tfmMoniker: ".NETCoreApp,Version=v7.0",
+                    configuration: "Debug",
+                    projectDirectory: "D:\\Stuff\\Test Scripts\\net7",
+                    assemblyFullPath: "D:\\Stuff\\Test Scripts\\net7\\bin\\Debug\\net7.0\\net7.dll")
+                .InWorkingDirectory("D:\\Stuff\\Test Scripts\\net7\\bin\\Debug\\net7.0");
+        }
+
 
         private static ScaffoldingServer StartServerMsIdentity(ILogger logger, ProvisioningToolOptions toolOptions)
         {
@@ -96,8 +147,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_TENANTS_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+               /* IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_TENANTS_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -107,8 +158,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_SERVICE_PRINCIPALS_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+               /* IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.LIST_SERVICE_PRINCIPALS_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -118,8 +169,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.REGISTER_APPLICATIION_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+                /*IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.REGISTER_APPLICATIION_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -129,8 +180,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UPDATE_APP_REGISTRATION_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+               /* IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UPDATE_APP_REGISTRATION_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -140,8 +191,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UNREGISTER_APPLICATION_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+                /*IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UNREGISTER_APPLICATION_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -151,8 +202,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.CREATE_APP_REGISTRATION_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+               /* IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.CREATE_APP_REGISTRATION_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -162,8 +213,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UPDATE_PROJECT_COMMAND, provisioningToolOptions);
-                await msAADTool.Run();
+                /*IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.UPDATE_PROJECT_COMMAND, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;
@@ -173,8 +224,8 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         {
             if (provisioningToolOptions != null)
             {
-                IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.ADD_CLIENT_SECRET, provisioningToolOptions);
-                await msAADTool.Run();
+               /* IMsAADTool msAADTool = MsAADToolFactory.CreateTool(Commands.ADD_CLIENT_SECRET, provisioningToolOptions);
+                */await Task.Delay(100);
                 return 0;
             }
             return -1;

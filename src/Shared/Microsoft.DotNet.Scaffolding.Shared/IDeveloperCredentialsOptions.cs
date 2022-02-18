@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 namespace Microsoft.DotNet.MSIdentity.DeveloperCredentials
@@ -10,12 +10,12 @@ namespace Microsoft.DotNet.MSIdentity.DeveloperCredentials
         /// provision the application in the tenant. Optional if you want
         /// to use the developer credentials (Visual Studio).
         /// </summary>
-        public string? Username { get; set; }
+        string Username { get; set; }
 
         /// <summary>
         /// Tenant ID of the application (optional if the user belongs to
         /// only one tenant Id).
         /// </summary>
-        public string? TenantId { get; set; }
+        string TenantId { get; set; }
     }
 }

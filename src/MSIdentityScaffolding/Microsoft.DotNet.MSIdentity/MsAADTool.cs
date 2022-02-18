@@ -14,7 +14,7 @@ using Microsoft.Graph;
 
 namespace Microsoft.DotNet.MSIdentity.Tool
 {
-    internal class MsAADTool : IMsAADTool
+    public class MsAADTool : IMsAADTool
     {
         internal IConsoleLogger ConsoleLogger { get; }
         private ProvisioningToolOptions ProvisioningToolOptions { get; set; }

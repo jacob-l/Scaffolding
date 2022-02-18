@@ -1,4 +1,4 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Tools
         private const string DISPATCHER_VERSION = "--DISPATCHER-VERSION";
         private const string NO_BUILD = "--NO-BUILD";
         private const string PORT_NUMBER = "--PORT-NUMBER";
-
+        private const string SIM_MODE = "--SIMULATION-MODE";
         private const string NO_DISPATCH_FLAG_SHORT = "-ND";
         private const string CONFIGURATION_SHORT = "-C";
         private const string TARGET_FRAMEWORK_SHORT = "-TFM";
@@ -69,12 +69,10 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Tools
         /// </summary>
         internal static string[] GetProjectDependencyCommandArgs(string[] args, string frameworkName, string portNumber)
         {
-            List<string> cmdArgs = new List<string>();
+            List<string> cmdArgs = new List<string>(args);
             cmdArgs.Add(NO_DISPATCH_FLAG.ToLowerInvariant());
             cmdArgs.Add(PORT_NUMBER.ToLowerInvariant());
             cmdArgs.Add(portNumber);
-
-            cmdArgs.AddRange(args);
             return cmdArgs.ToArray();
         }
 
@@ -82,5 +80,7 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Tools
 
         internal static bool IsHelpArgument(string[] args) => args.Any(a => a.Equals("-h", StringComparison.OrdinalIgnoreCase)
                                                                          || a.Equals("--help", StringComparison.OrdinalIgnoreCase));
+
+        internal static bool IsSimulationMode(string[] args) => args.Contains(SIM_MODE, StringComparer.OrdinalIgnoreCase);
     }
 }

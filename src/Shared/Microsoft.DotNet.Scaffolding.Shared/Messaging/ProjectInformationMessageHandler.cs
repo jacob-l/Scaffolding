@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Microsoft.DotNet.Scaffolding.Shared;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
+using Microsoft.DotNet.MSIdentity.Tool;
 
 namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
 {

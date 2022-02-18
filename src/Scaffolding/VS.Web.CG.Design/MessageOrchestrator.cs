@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.DotNet.MSIdentity.Tool;
 using Microsoft.DotNet.Scaffolding.Shared;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
@@ -14,6 +15,7 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
         private ScaffoldingClient _client;
         private ILogger _logger;
         private ProjectInformationMessageHandler _projectInformationMessageHandler;
+        private ProvisioningToolOptionsMessageHandler _provisioningToolOptionsMessageHandler;
         private int _currentProtocolVersion;
 
         private int _serverProtocolVersion = 1;
@@ -35,6 +37,7 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
             _logger = logger;
             _client = client;
             _projectInformationMessageHandler = new ProjectInformationMessageHandler(_logger);
+            _provisioningToolOptionsMessageHandler = new ProvisioningToolOptionsMessageHandler(logger);
             _currentProtocolVersion = _projectInformationMessageHandler.CurrentProtocolVersion;
             client.AddHandler(_projectInformationMessageHandler);
         }
@@ -57,6 +60,26 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
             }
 
             return projectInfo;
+        }
+
+        public ProvisioningToolOptions GetProvisioningToolOptions()
+        {
+            var message = _client.CreateMessage(MessageTypes.ProvisioningToolOptionsRequest, null, _provisioningToolOptionsMessageHandler.CurrentProtocolVersion);
+
+            _client.Send(message);
+            // Read the project Information
+            var responseMessage = _client.ReadMessage();
+            _serverProtocolVersion = responseMessage.ProtocolVersion;
+            _serverHostId = responseMessage.HostId;
+
+            var provisioningToolOptions = _provisioningToolOptionsMessageHandler.ProvisioningToolOptions;
+
+            if (provisioningToolOptions == null)
+            {
+                throw new InvalidOperationException("bah i got nothing");
+            }
+
+            return provisioningToolOptions;
         }
 
         public void SendFileSystemChangeInformation(IEnumerable<FileSystemChangeInformation> fileSystemChanges)

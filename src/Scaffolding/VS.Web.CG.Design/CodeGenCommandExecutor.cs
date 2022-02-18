@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.Web.CodeGeneration.Templating;
 using Microsoft.VisualStudio.Web.CodeGeneration.Templating.Compilation;
 using Microsoft.VisualStudio.Web.CodeGeneration.Utils;
 using Microsoft.DotNet.Scaffolding.Shared.Project;
+using Microsoft.DotNet.MSIdentity.Tool;
 
 namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
 {
@@ -114,6 +115,7 @@ namespace Microsoft.VisualStudio.Web.CodeGeneration.Design
             serviceProvider.AddServiceWithDependencies<IDbContextEditorServices, DbContextEditorServices>();
             serviceProvider.AddServiceWithDependencies<IEntityFrameworkService, EntityFrameworkServices>();
             serviceProvider.AddServiceWithDependencies<ICodeModelService, CodeModelService>();
+            serviceProvider.AddServiceWithDependencies<IMsAADTool, MsAADTool>();
         }
     }
 }

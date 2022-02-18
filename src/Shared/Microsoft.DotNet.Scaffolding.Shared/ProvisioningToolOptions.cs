@@ -12,17 +12,17 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         /// <summary>
         /// Path to csproj file 
         /// </summary>
-        public string? ProjectFilePath{ get; set; }
+        public string ProjectFilePath{ get; set; }
 
         /// <summary>
         /// Path to appsettings.json file
         /// </summary>   
-        public string? AppSettingsFilePath { get; set; }
+        public string AppSettingsFilePath { get; set; }
 
         ///<summary>
         /// Display name for Azure AD/AD B2C app registration
         ///</summary>
-        public string? AppDisplayName { get; set; }
+        public string AppDisplayName { get; set; }
 
         ///<summary>
         /// Web redirect URIs.
@@ -48,7 +48,7 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         /// Type of project. 
         /// For instance web app, web API, blazorwasm-hosted, ...
         /// </summary>
-        public string? ProjectType { get; set; }
+        public string ProjectType { get; set; }
 
         /// <summary>
         /// Identifier of a project type. This is the concatenation of the framework
@@ -68,36 +68,36 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         /// provision the application in the tenant. Optional if you want
         /// to use the developer credentials (Visual Studio).
         /// </summary>
-        public string? Username { get; set; }
+        public string Username { get; set; }
 
         /// <summary>
         /// Client secret for the application.
         /// </summary>
-        public string? ClientSecret { get; set; }
+        public string ClientSecret { get; set; }
 
         /// <summary>
         /// Client ID of the application (optional).
         /// </summary>
-        public string? ClientId { get; set; }
+        public string ClientId { get; set; }
 
         /// <summary>
         /// Client ID of the blazorwasm hosted web api application (optional).
         /// This is only used in the case of blazorwasm hosted. The name is after
         /// the blazorwasm template's parameter --api-client-id
         /// </summary>
-        public string? WebApiClientId { get; set; }
+        public string WebApiClientId { get; set; }
 
         /// <summary>
         /// Tenant ID of the application (optional if the user belongs to
         /// only one tenant).
         /// </summary>
-        public string? TenantId { get; set; }
+        public string TenantId { get; set; }
 
         /// <summary>
         /// Required for the creation of a B2C application.
         /// Represents the sign-up/sign-in user flow.
         /// </summary>
-        public string? SusiPolicyId { get; set; }
+        public string SusiPolicyId { get; set; }
 
         /// <summary>
         /// Display Help.
@@ -112,12 +112,12 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         /// <summary>
         /// Scopes for the called web API.
         /// </summary>
-        public string? CalledApiScopes { get; set; }
+        public string CalledApiScopes { get; set; }
 
         /// <summary>
         /// Url for the called web API.
         /// </summary>
-        public string? CalledApiUrl { get; set; }
+        public string CalledApiUrl { get; set; }
 
         /// <summary>
         /// Calls Microsoft Graph.
@@ -138,7 +138,7 @@ namespace Microsoft.DotNet.MSIdentity.Tool
         /// The App ID Uri for the blazorwasm hosted API. It's only used
         /// on the case of a blazorwasm hosted application.
         /// </summary>
-        public string? AppIdUri { get; set; }
+        public string AppIdUri { get; set; }
 
         /// <summary>
         /// Format for console output for list commands.

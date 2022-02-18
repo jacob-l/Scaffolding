@@ -9,8 +9,8 @@ namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
     {
         private HashSet<string> _messageTypesHandled = new HashSet<string>()
         {
-            MessageTypes.ProjectInfoRequest.Value,
-            MessageTypes.ProjectInfoResponse.Value
+            MessageTypes.ProvisioningToolOptionsRequest.Value,
+            MessageTypes.ProvisioningToolOptionsResponse.Value
         };
         private ProvisioningToolOptions _provisioningToolOptions;
 
@@ -28,7 +28,7 @@ namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
         public ProvisioningToolOptionsMessageHandler(ILogger logger)
             : base(logger)
         {
-
+            _provisioningToolOptions = new ProvisioningToolOptions();
         }
 
         public ProvisioningToolOptions ProvisioningToolOptions
@@ -43,14 +43,14 @@ namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
 
         protected override bool HandleMessageInternal(IMessageSender sender, Message message)
         {
-            if (MessageTypes.ProjectInfoRequest.Value.Equals(message.MessageType, StringComparison.OrdinalIgnoreCase))
+            if (MessageTypes.ProvisioningToolOptionsRequest.Value.Equals(message.MessageType, StringComparison.OrdinalIgnoreCase))
             {
-                Message response = sender.CreateMessage(MessageTypes.ProjectInfoResponse, _provisioningToolOptions, CurrentProtocolVersion);
+                Message response = sender.CreateMessage(MessageTypes.ProvisioningToolOptionsResponse, _provisioningToolOptions, CurrentProtocolVersion);
                 sender.Send(response);
             }
-            else if (MessageTypes.ProjectInfoResponse.Value.Equals(message.MessageType, StringComparison.OrdinalIgnoreCase))
+            else if (MessageTypes.ProvisioningToolOptionsResponse.Value.Equals(message.MessageType, StringComparison.OrdinalIgnoreCase))
             {
-                BuildProjectInformation(message);
+                BuildProvisioningToolOptions(message);
             }
             else
             {
@@ -61,15 +61,15 @@ namespace Microsoft.DotNet.Scaffolding.Shared.Messaging
         }
 
         [SuppressMessage("supressing re-throw exception", "CA2200")]
-        private void BuildProjectInformation(Message msg)
+        private void BuildProvisioningToolOptions(Message msg)
         {
             try
             {
-                _provisioningToolOptions = msg.Payload.ToObject<ProvisioningToolOptions>();
+                _provisioningToolOptions = msg.Payload.ToObject<ProvisioningToolOptions>() ?? throw new Exception("bah");
             }
             catch (Exception ex)
             {
-                Logger.LogMessage($"{MessageStrings.InvalidProjectInformationMessage}{Environment.NewLine}{msg?.ToString()}");
+                Logger.LogMessage($"Not working booo{Environment.NewLine}{msg?.ToString()}");
                 throw ex;
             }
         }
