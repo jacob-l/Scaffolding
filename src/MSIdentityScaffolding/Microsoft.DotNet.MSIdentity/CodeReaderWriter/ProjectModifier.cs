@@ -54,6 +54,9 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             // Initialize Microsoft.Build assemblies
             if (!MSBuildLocator.IsRegistered)
             {
@@ -66,6 +69,7 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             {
                 return;
             }
+<<<<<<< HEAD
 =======
             //Initialize Microsoft.Build assemblies
 =======
@@ -88,6 +92,8 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
                 return;
             }
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
 
             var isMinimalApp = await ProjectModifierHelper.IsMinimalApp(project);
             CodeChangeOptions options = new CodeChangeOptions
@@ -113,16 +119,23 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (CodeModifierConfigPropertyInfo is null)
 =======
             var propertyInfo = AppProvisioningTool.Properties.Where(
                 p => p.Name.StartsWith("cm") && p.Name.Contains(_toolOptions.ProjectType)).FirstOrDefault();
             if (propertyInfo is null)
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
+=======
+            var propertyInfo = AppProvisioningTool.Properties.Where(
+                p => p.Name.StartsWith("cm") && p.Name.Contains(_toolOptions.ProjectType)).FirstOrDefault();
+            if (propertyInfo is null)
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             {
                 return null;
             }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
             byte[] content = (CodeModifierConfigPropertyInfo.GetValue(null) as byte[])!;
             CodeModifierConfig? codeModifierConfig = ReadCodeModifierConfigFromFileContent(content);
@@ -130,11 +143,14 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             {
                 throw new FormatException($"Resource file { CodeModifierConfigPropertyInfo.Name } could not be parsed. ");
 =======
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             byte[] content = (propertyInfo.GetValue(null) as byte[])!;
             CodeModifierConfig? codeModifierConfig = ReadCodeModifierConfigFromFileContent(content);
             if (codeModifierConfig is null)
             {
                 throw new FormatException($"Resource file { propertyInfo.Name } could not be parsed. ");
+<<<<<<< HEAD
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
             }
 
@@ -163,6 +179,15 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
             }
 
+=======
+            }
+
+            if (!codeModifierConfig.Identifier.Equals(_toolOptions.ProjectTypeIdentifier, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             return codeModifierConfig;
         }
 
@@ -213,6 +238,7 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
         /// <param name="identifier"></param>
         /// <exception cref="FormatException"></exception>
         private void AddFile(CodeFile file, string identifier)
+<<<<<<< HEAD
         {
             var filePath = Path.Combine(_toolOptions.ProjectPath, file.AddFilePath);
             if (File.Exists(filePath))
@@ -232,6 +258,27 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
 
         private string GetCodeFileString(CodeFile file, string identifier)
         {
+=======
+        {
+            var filePath = Path.Combine(_toolOptions.ProjectPath, file.AddFilePath);
+            if (File.Exists(filePath))
+            {
+                return; // File exists, don't need to create
+            }
+
+            var codeFileString = GetCodeFileString(file, identifier);
+
+            var fileDir = Path.GetDirectoryName(filePath);
+            if (!string.IsNullOrEmpty(fileDir))
+            {
+                Directory.CreateDirectory(fileDir);
+                File.WriteAllText(filePath, codeFileString);
+            }
+        }
+
+        private string GetCodeFileString(CodeFile file, string identifier)
+        {
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             var propertyInfo = GetPropertyInfo(file.FileName, identifier);
             if (propertyInfo is null)
             {
@@ -246,6 +293,7 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             }
 
             return codeFileString;
+<<<<<<< HEAD
         }
 
 <<<<<<< HEAD
@@ -296,6 +344,21 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
 
         internal async Task ModifyCsFile(CodeFile file, CodeAnalysis.Project project, CodeChangeOptions options)
         {
+=======
+        }
+
+        private PropertyInfo? GetPropertyInfo(string fileName, string identifier)
+        {
+            return AppProvisioningTool.Properties.Where(
+                p => p.Name.StartsWith("add")
+                && p.Name.Contains(identifier.Replace('-', '_')) // Resource files cannot have '-' (dash character)
+                && p.Name.Contains(fileName.Replace('.', '_'))) // Resource files cannot have '.' (period character)
+                .FirstOrDefault();
+        }
+
+        internal async Task ModifyCsFile(CodeFile file, CodeAnalysis.Project project, CodeChangeOptions options)
+        {
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             if (file.FileName.Equals("Startup.cs"))
             {
                 // Startup class file name may be different
@@ -314,6 +377,7 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             {
                 return;
             }
+<<<<<<< HEAD
 
             DocumentBuilder documentBuilder = new DocumentBuilder(documentEditor, file, _consoleLogger);
             var modifiedRoot = ModifyRoot(documentBuilder, options, file);
@@ -400,6 +464,13 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             var modifiedRoot = ModifyRoot(documentBuilder, options, file);
             if (modifiedRoot != null)
             {
+=======
+
+            DocumentBuilder documentBuilder = new DocumentBuilder(documentEditor, file, _consoleLogger);
+            var modifiedRoot = ModifyRoot(documentBuilder, options, file);
+            if (modifiedRoot != null)
+            {
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
                 documentEditor.ReplaceNode(documentEditor.OriginalRoot, modifiedRoot);
                 await documentBuilder.WriteToClassFileAsync(fileDoc.FilePath);
             }
@@ -412,6 +483,7 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
         /// <param name="options"></param>
         /// <param name="file"></param>
         /// <returns>modified root if there are changes, else null</returns>
+<<<<<<< HEAD
         private static SyntaxNode? ModifyRoot(DocumentBuilder documentBuilder, CodeChangeOptions options, CodeFile file)
         {
             var root = documentBuilder.AddUsings(options);
@@ -428,6 +500,8 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
         /// <param name="options"></param>
         /// <param name="file"></param>
         /// <returns>modified root if there are changes, else null</returns>
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
         private static CompilationUnitSyntax? ModifyRoot(DocumentBuilder documentBuilder, CodeChangeOptions options, CodeFile file)
         {
             var newRoot = documentBuilder.AddUsings(options);
@@ -456,12 +530,16 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
                 var namespaceNode = newRoot?.Members.OfType<NamespaceDeclarationSyntax>()?.FirstOrDefault();
                 FileScopedNamespaceDeclarationSyntax? fileScopedNamespace = null;
                 if (namespaceNode is null)
+<<<<<<< HEAD
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
                 {
                     (string oldValue, string newValue) = updatedIdentifer.Value;
                     filteredChanges = ProjectModifierHelper.UpdateVariables(filteredChanges, oldValue, newValue);
                 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
                 var updatedRoot = DocumentBuilder.ApplyChangesToMethod(root, filteredChanges);
                 return updatedRoot;
@@ -474,6 +552,8 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
                 string className = ProjectModifierHelper.GetClassName(file.FileName);
                 // get classNode. All class changes are done on the ClassDeclarationSyntax and then that node is replaced using documentEditor.
 =======
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
                 string className = ProjectModifierHelper.GetClassName(file.FileName);
                 //get classNode. All class changes are done on the ClassDeclarationSyntax and then that node is replaced using documentEditor.
                 var classNode =
@@ -499,11 +579,21 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
                     modifiedClassDeclarationSyntax = ModifyMethods(modifiedClassDeclarationSyntax, documentBuilder, file.Methods, options);
 
                     //add code snippets/changes.
+<<<<<<< HEAD
+=======
+                    if (file.Methods != null && file.Methods.Any())
+                    {
+                        modifiedClassDeclarationSyntax = documentBuilder.AddCodeSnippets(modifiedClassDeclarationSyntax, options);
+                        modifiedClassDeclarationSyntax = documentBuilder.EditMethodTypes(modifiedClassDeclarationSyntax, options);
+                        modifiedClassDeclarationSyntax = documentBuilder.AddMethodParameters(modifiedClassDeclarationSyntax, options);
+                    }
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
                     //replace class node with all the updates.
 #pragma warning disable CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
                     root = root.ReplaceNode(classNode, modifiedClassDeclarationSyntax);
 #pragma warning restore CS8631 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match constraint type.
                 }
+<<<<<<< HEAD
 <<<<<<< HEAD
             }
 
@@ -562,6 +652,31 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
             var editedDocument = await ProjectModifierHelper.ModifyDocumentText(fileDoc, filteredCodeChanges);
             if (editedDocument != null)
             {
+=======
+            }
+
+            return newRoot;
+        }
+
+        internal async Task ModifyCshtmlFile(CodeFile file, CodeAnalysis.Project project, CodeChangeOptions options)
+        {
+            var fileDoc = project.Documents.Where(d => d.Name.EndsWith(file.FileName)).FirstOrDefault();
+            if (fileDoc is null || file.Methods is null || !file.Methods.TryGetValue("Global", out var globalMethod))
+            {
+                return;
+            }
+
+            var filteredCodeChanges = globalMethod.CodeChanges.Where(cc => ProjectModifierHelper.FilterOptions(cc.Options, options));
+            if (!filteredCodeChanges.Any())
+            {
+                return;
+            }
+
+            // add code snippets/changes.
+            var editedDocument = await ProjectModifierHelper.ModifyDocumentText(fileDoc, filteredCodeChanges);
+            if (editedDocument != null)
+            {
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
                 //replace the document
                 await ProjectModifierHelper.UpdateDocument(editedDocument, _consoleLogger);
             }
@@ -577,10 +692,14 @@ namespace Microsoft.DotNet.MSIdentity.CodeReaderWriter
         internal async Task ApplyTextReplacements(CodeFile file, CodeAnalysis.Project project, CodeChangeOptions toolOptions)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             var document = project.Documents.FirstOrDefault(d => d.Name.EndsWith(file.FileName));
 =======
             var document = project.Documents.Where(d => d.Name.EndsWith(file.FileName)).FirstOrDefault();
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
+=======
+            var document = project.Documents.Where(d => d.Name.EndsWith(file.FileName)).FirstOrDefault();
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
             if (document is null)
             {
                 return;

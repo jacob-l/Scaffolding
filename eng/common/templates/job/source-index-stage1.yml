@@ -9,7 +9,10 @@ parameters:
 =======
   pool:
     vmImage: 'windows-2019'
+<<<<<<< HEAD
 >>>>>>> c9c71cf5 (Cherry picking main into release/6.0 (#1688))
+=======
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
   condition: ''
   dependsOn: ''
 

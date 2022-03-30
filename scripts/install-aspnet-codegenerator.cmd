@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 set VERSION=7.0.0-dev
 =======
 set VERSION=6.0.1
@@ -7,6 +8,9 @@ set VERSION=6.0.1
 =======
 set VERSION=6.0.2
 >>>>>>> 1abb1367 (Servicing release for dotnet-aspnet-codegenerator and dotnet-msidentity (#1816))
+=======
+set VERSION=6.0.2
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
 set DEFAULT_NUPKG_PATH=%userprofile%\.nuget\packages
 set SRC_DIR=%cd%
 set NUPKG=artifacts/packages/Debug/Shipping/

@@ -7,10 +7,14 @@
 if [[ "$#" -lt 3 ]]; then
   echo "Usage..."
 <<<<<<< HEAD
+<<<<<<< HEAD
   echo "init-compiler.sh <script directory> <Architecture> <compiler>"
 =======
   echo "init-compiler.sh <script directory> <Architecture> <compiler> <compiler major version> <compiler minor version>"
 >>>>>>> c9c71cf5 (Cherry picking main into release/6.0 (#1688))
+=======
+  echo "init-compiler.sh <script directory> <Architecture> <compiler> <compiler major version> <compiler minor version>"
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
   echo "Specify the script directory."
   echo "Specify the target architecture."
   echo "Specify the name of compiler (clang or gcc)."
@@ -20,6 +24,7 @@ fi
 nativescriptroot="$1"
 build_arch="$2"
 compiler="$3"
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 case "$compiler" in
@@ -51,6 +56,11 @@ cxxCompiler="$compiler++"
 majorVersion="$4"
 minorVersion="$5"
 >>>>>>> c9c71cf5 (Cherry picking main into release/6.0 (#1688))
+=======
+cxxCompiler="$compiler++"
+majorVersion="$4"
+minorVersion="$5"
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
 
 . "$nativescriptroot"/../pipeline-logging-functions.sh
 

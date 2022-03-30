@@ -48,6 +48,7 @@ jobs:
       value: ${{ coalesce(parameters.overrideGuardianVersion, '$(DefaultGuardianVersion)') }}
   pool:
 <<<<<<< HEAD
+<<<<<<< HEAD
     # We don't use the collection uri here because it might vary (.visualstudio.com vs. dev.azure.com)
     ${{ if eq(variables['System.TeamProject'], 'DevDiv') }}:
       name: VSEngSS-MicroBuild2022-1ES
@@ -59,6 +60,9 @@ jobs:
 =======
     vmImage: windows-2019
 >>>>>>> c9c71cf5 (Cherry picking main into release/6.0 (#1688))
+=======
+    vmImage: windows-2019
+>>>>>>> 1abb1367b81d1ef7cc9fac52b3ab628cad7f5bae
   steps:
   - checkout: self
     clean: true
